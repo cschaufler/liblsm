@@ -16,6 +16,15 @@
 #define BIGATTR 256
 #define MAXLSM 20 /* For prototype only - real value should be ??? */
 
+/**
+ * readattr - read an attribute value from the specified path
+ * @path: file containing the attribute
+ *
+ * Open the file, read an attribute, and close the file.
+ *
+ * Returns an allocated buffer containing the attribute or NULL
+ * on any failure.
+ */
 static char *readattr(const char *path)
 {
 	int lsize;
@@ -37,6 +46,16 @@ static char *readattr(const char *path)
 	return red;
 }
 
+/**
+ * writeattr - write an attribute value to the specified path
+ * @path: file containing the attribute
+ * @data: value to write
+ * @len: length of the data to write
+ *
+ * Open the file, write an attribute, and close the file.
+ *
+ * Returns number of bytes writen on success, -1 on failure.
+ */
 static int writeattr(const char *path, char *data, int len)
 {
 	int fd;
@@ -51,6 +70,18 @@ static int writeattr(const char *path, char *data, int len)
 	return rc;
 }
 
+/**
+ * add_lsm_ctx - fill an lsm_ctx structure
+ * @nctx: pointer to the destination buffer
+ * @id: the LSM ID to set
+ * @attr: the attribute data
+ * @size: the size of the attribute data
+ *
+ * Fill the lsm_ctx structure pointed to by @nctx, verifying that
+ * it fits in the @size available.
+ *
+ * Returns the final size of the lsm_ctx.
+ */
 static unsigned int add_lsm_ctx(struct lsm_ctx *nctx, __u64 id, char *attr,
 				__kernel_size_t size)
 {
@@ -71,6 +102,16 @@ static unsigned int add_lsm_ctx(struct lsm_ctx *nctx, __u64 id, char *attr,
 	return lctx.len;
 }
 
+/**
+ * attrpath - match the attribute and LSM ids to a /proc attr path
+ * @attr: attribute ID
+ * @lsmid: Security Module ID
+ *
+ * Use the IDs passed to determine what path name in /proc/self/attr
+ * represents them.
+ * 
+ * Returns the path if known, NULL otherwise.
+ */
 static const char *attrpath(unsigned int attr, __u64 lsmid)
 {
 	switch (attr) {
@@ -117,6 +158,21 @@ static const char *attrpath(unsigned int attr, __u64 lsmid)
 	return NULL;
 }
 
+/*
+ * lsm_get_self_attr_proc - emulate lsm_get_self_attr from /proc
+ * @attr: attribute ID to fetch
+ * @ctx: destination buffer
+ * @size: size of the destination buffer
+ *
+ * Identify the appropriate entries in /proc/self/attr for the
+ * specified @attr and fetch the data from them, adding the result
+ * to @ctx in lsm_ctx format. This emulates the behavior of the
+ * lsm_get_self_attr() system call for systems before 6.8 that don't
+ * support it.
+ *
+ * Returns the number of lsm_ctx elements or a negative value
+ * on error.
+ */
 int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx,
 			   __kernel_size_t *size)
 {
@@ -153,6 +209,18 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx,
 	return E2BIG;
 }
 
+/*
+ * lsm_set_self_attr_proc - emulate lsm_set_self_attr from /proc
+ * @attr: attribute ID to fetch
+ * @ctx: destination buffer
+ *
+ * Identify the appropriate entry in /proc/self/attr for the
+ * specified @attr and set the data to them. This emulates the
+ * behavior of the lsm_set_self_attr() system call for systems
+ * before 6.8 that don't support it.
+ *
+ * Returns the size written or -1 on error.
+ */
 int lsm_set_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx)
 {
 	const char *towrite;
@@ -163,6 +231,17 @@ int lsm_set_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx)
 	return -1;
 }
 
+/*
+ * lsm_list_modules_proc - emulate lsm_list_modules
+ * @result: destination buffer
+ * @size: size of the destination buffer
+ *
+ * Read the list of active LSMs from securityfs and convert them
+ * to LSM IDs. This emulates the behavior of the lsm_set_self_attr()
+ * system call for systems before 6.8 that don't support it.
+ *
+ * Returns the number of LSM IDs or -1 on error.
+ */
 int lsm_list_modules_proc(__u64 *result, __kernel_size_t *size)
 {
 	char *lsm;

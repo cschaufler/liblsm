@@ -28,6 +28,14 @@ static const struct id_map lsm_ids[] = {
 	{ .name = "landlock",	.id = LSM_ID_LANDLOCK },
 };
 
+/**
+ * lsm_id_to_name - get the LSM name for an LSM ID
+ * @id: The LSM ID in question.
+ *
+ * Map @id to an LSM ID.
+ *
+ * Returns a string pointer if the LSM is found, NULL otherwise.
+ */
 const char *lsm_id_to_name(int id)
 {
 	unsigned int i;
@@ -39,6 +47,14 @@ const char *lsm_id_to_name(int id)
 	return NULL;
 }
 
+/**
+ * lsm_id_from_name - get the LSM ID for an LSM name
+ * @name: The LSM name in question.
+ *
+ * Map @name to an LSM name.
+ *
+ * Returns the LSM ID if the @name is found, LSM_ID_UNDEF otherwise.
+ */
 int lsm_id_from_name(const char *name)
 {
 	unsigned int i;
@@ -59,6 +75,14 @@ static const struct id_map lsm_attrs[] = {
 	{ .name = "sockcreate",	.id = LSM_ATTR_SOCKCREATE },
 };
 
+/**
+ * lsm_attr_flag_to_name - get the LSM attribute name for an attr ID
+ * @attr: The LSM attribute ID in question.
+ *
+ * Map @attr to an LSM attribute name.
+ *
+ * Returns a string pointer if the attribute is found, NULL otherwise.
+ */
 const char *lsm_attr_flag_to_name(int attr)
 {
 	unsigned int i;
@@ -70,6 +94,14 @@ const char *lsm_attr_flag_to_name(int attr)
 	return NULL;
 }
 
+/**
+ * lsm_attr_flag_from_name - get the LSM attribute ID for an attr name
+ * @name: The LSM attribute name in question.
+ *
+ * Map @name to an LSM attribute ID.
+ *
+ * Returns the attribute ID if the @name is found, LSM_ATTR_UNDEF otherwise.
+ */
 int lsm_attr_flag_from_name(const char *name)
 {
 	unsigned int i;

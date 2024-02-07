@@ -7,6 +7,17 @@
 #include <unistd.h>
 #include <linux/lsm.h>
 
+/**
+ * lsm_ctx_next - get a pointer to the lsm_ctx after this one
+ * @ctx: The LSM context currently known
+ * @size: The size of the buffer containing the contexts.
+ *
+ * Verify that there are contexts after the current one,
+ * and return a pointer to the next one.
+ *
+ * Returns NULL if there are no more contexts, the next
+ * one if there is one.
+ */
 struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *ctx, __u64 *size)
 {
 	if (ctx == NULL || size == NULL || *size <= ctx->len)
