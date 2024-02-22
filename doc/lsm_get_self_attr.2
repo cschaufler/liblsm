@@ -1,0 +1,67 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 16, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_get_self_attr 2 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_get_self_attr \- get Linux security module attributes of the process
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "int lsm_get_self_attr(unsigned int " attr ,
+.BI "                      struct lsm_ctx *" ctx ,
+.BI "                      size_t *" size ,
+.BI "                      u32 " flags );
+.P
+.SH DESCRIPTION
+Return Linux Security Module (LSM) attributes specified by
+.I attr
+for the current process in the buffer pointed to by
+.IR ctx .
+The size of the buffer is specified by
+.IR size .
+On return the size value is reset to reflect the total size
+of all the returned attributes.
+Special handling of the data is specified in
+.IR flags.
+.P
+The full list of supported flags is as follows:
+.TP
+.B LSM_FLAG_SINGLE
+Report only one attribute value.
+The value for the LSM identified in
+.I ctx
+will be reported.
+.P
+.SS The lsm_ctx structure
+This system call returns data into a set of
+.I lsm_ctx
+structures (see
+.
+.BR lsm_ctx (3type)).
+.SH RETURN VALUE
+On success, the number of attributes is returned.
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.B EFAULT
+Bad address.
+.TP
+.B EINVAL
+The value passed in
+.I attr
+is not a valid LSM attribute ID, or the
+.I flags
+value is unrecognized.
+.TP
+.B ENOMEM
+Out of memory (i.e., kernel memory).
+.SH SEE ALSO
+.BR lsm_set_proc_attr (2),
+.BR lsm_list_modules (2),
+.BR lsm_ctx (3type)

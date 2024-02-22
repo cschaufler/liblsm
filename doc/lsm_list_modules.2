@@ -1,0 +1,47 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 16, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_list_modules 2 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_list_modules \- list the Linux security modules active on the system
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "int lsm_list_modules(u64 *" ids ", size_t *" size ", u32 " flags );
+.P
+.SH DESCRIPTION
+Returns a list of the active LSM ids in the buffer pointed to by
+.IR ids .
+The size of the buffer is specified by
+.I size
+on input.
+The value pointed to by
+.I size
+is set to the size of the list of LSM IDs.
+Special handling of the data is specified in
+.IR flags.
+.P
+.SH RETURN VALUE
+On success, the number of LSM IDs is returned.
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.B EFAULT
+Bad address.
+.TP
+.B EINVAL
+The 
+.I flags
+value is unrecognized.
+.TP
+.B E2BIG
+The list of LSM ids will not fit in the buffer.
+.SH SEE ALSO
+.BR lsm_get_proc_attr (2),
+.BR lsm_set_proc_attr (2)

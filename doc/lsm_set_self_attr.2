@@ -1,0 +1,59 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 16, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_set_self_attr 2 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_set_self_attr \- set Linux security module attributes of the process
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "int lsm_set_self_attr(unsigned int " attr ,
+.BI "                      struct lsm_ctx *" ctx ,
+.BI "                      size_t " size ,
+.BI "                      u32 " flags );
+.P
+.SH DESCRIPTION
+Set the Linux Security Module (LSM) attribute specified by
+.I attr
+for the current process to the value in the buffer pointed to by
+.IR ctx .
+The size of the buffer is specified by
+.IR size .
+Special handling of the data is specified in
+.IR flags.
+.P
+.SS The lsm_ctx structure
+This system call set the current process LSM attribute based on an
+.I lsm_ctx
+structure (see
+.BR lsm_ctx (3type)).
+.SH RETURN VALUE
+On success, 0 is returned
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.B EFAULT
+Bad address.
+.TP
+.B EINVAL
+The value passed in
+.I attr
+is not a valid LSM attribute ID, or the
+.I flags
+value is unrecognized.
+.TP
+.B ENOMEM
+Out of memory (i.e., kernel memory).
+.TP
+.B EPERM
+The process lacks sufficient permission to set the attribute.
+.SH SEE ALSO
+.BR lsm_get_proc_attr (2),
+.BR lsm_list_modules (2),
+.BR lsm_ctx (3type)

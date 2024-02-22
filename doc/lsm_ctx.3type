@@ -1,0 +1,53 @@
+.\" Copyright (c) 2024 by Casey Schaufler <casey@schaufler-ca.com>
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.\"
+.TH lsm_ctx 3type (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_ctx \- Linux Security Module (LSM) context
+.SH LIBRARY
+Linux Security Module (LSM)
+.RI ( liblsm )
+.SH SYNOPSIS
+.EX
+.B #include <linux/lsm.h>
+.P
+.B struct lsm_ctx {
+.BR "    __u64 id;" "      /* ID of the LSM */"
+.BR "    __u64 flags;" "   /* Extended information about the context */"
+.BR "    __u64 len;" "     /* Total size of the structure */"
+.BR "    __u64 ctx_len;" " /* Size of the context */"
+.BR "    __u8  ctx[];" "   /* Context */"
+.B };
+.EE
+.P
+.SH DESCRIPTION
+Describes LSM context attributes.
+.P
+The fields are as follows:
+.TP
+.I id
+This field identifies the LSM for which the context applies.
+.TP
+.I flags
+This field contains potential extended information about the context.
+.TP
+.I len
+This field contains the total size of the structure,
+including the context and any padding.
+.TP
+.I ctx_len
+This field contains the size of the context,
+including any padding.
+.TP
+.I ctx
+This field contains the context.
+The content is defined by the LSM.
+If the context is a character string it will be nul terminated and
+.I ctx_len
+will include the nul byte.
+.P
+.SH SEE ALSO
+.BR lsm_get_self_attr (2),
+.BR lsm_set_self_attr (2)
