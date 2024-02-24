@@ -1,0 +1,31 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 16, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_attr_flag_to_name 3 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_attr_flag_to_name \- provide the name of the LSM attribute
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "const char *lsm_attr_flag_to_name(int " id );
+.P
+.SH DESCRIPTION
+Returns a pointer to the Linux Security Module (LSM) process attribute
+associated with the supplied LSM attribute
+.IR id .
+.P
+.SH RETURN VALUE
+On success, a pointer to a nul terminated string is returned.
+If
+.I id
+does not represent a known LSM attribute, NULL is returned.
+.SH SEE ALSO
+.BR lsm_get_proc_attr (2),
+.BR lsm_set_proc_attr (2),
+.BR lsm_list_modules (2),
+.BR lsm_attr_flag_from_name (3)

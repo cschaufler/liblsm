@@ -1,0 +1,31 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 16, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_id_to_name 3 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_id_to_name \- provide the name of the LSM with a given LSM ID
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "const char *lsm_id_to_name(int " id );
+.P
+.SH DESCRIPTION
+Returns a pointer to the Linux Security Module (LSM) associated
+with the supplied LSM
+.IR id .
+.P
+.SH RETURN VALUE
+On success, a pointer to a nul terminated string is returned.
+If
+.I id
+does not represent a known LSM ID, NULL is returned.
+.SH SEE ALSO
+.BR lsm_get_proc_attr (2),
+.BR lsm_set_proc_attr (2),
+.BR lsm_list_modules (2),
+.BR lsm_id_from_name (3)
