@@ -1,0 +1,32 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 28, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_ctx_next 3 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_ctx_next \- get a pointer to the lsm_ctx after this one
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *" ctx ", __u64 *" size );
+.P
+.SH DESCRIPTION
+Verify that there are contexts after the current context
+.I ctx
+and return a pointer to the next one.
+The
+.I size
+parameter contains a pointer to the size of the buffer containing
+the contexts.
+Place the size of the current context into
+.I size 
+on return.
+.P
+.SH RETURN VALUE
+On success, a pointer to the next lsm_context in the buffer is returned.
+.SH SEE ALSO
+.BR lsm_get_proc_attr (2)
