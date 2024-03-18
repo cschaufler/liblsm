@@ -76,14 +76,14 @@ static const struct id_map lsm_attrs[] = {
 };
 
 /**
- * lsm_attr_flag_to_name - get the LSM attribute name for an attr ID
+ * lsm_attr_id_to_name - get the LSM attribute name for an attr ID
  * @attr: The LSM attribute ID in question.
  *
  * Map @attr to an LSM attribute name.
  *
  * Returns a string pointer if the attribute is found, NULL otherwise.
  */
-const char *lsm_attr_flag_to_name(int attr)
+const char *lsm_attr_id_to_name(int attr)
 {
 	unsigned int i;
 
@@ -95,14 +95,14 @@ const char *lsm_attr_flag_to_name(int attr)
 }
 
 /**
- * lsm_attr_flag_from_name - get the LSM attribute ID for an attr name
+ * lsm_attr_id_from_name - get the LSM attribute ID for an attr name
  * @name: The LSM attribute name in question.
  *
  * Map @name to an LSM attribute ID.
  *
  * Returns the attribute ID if the @name is found, LSM_ATTR_UNDEF otherwise.
  */
-int lsm_attr_flag_from_name(const char *name)
+int lsm_attr_id_from_name(const char *name)
 {
 	unsigned int i;
 

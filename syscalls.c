@@ -22,7 +22,7 @@
  * Returns the number of attributes fetched, or -1 on error.
  */
 int lsm_get_self_attr(unsigned int attr, struct lsm_ctx *ctx,  
-		      __kernel_size_t *size, __u32 flags)
+		      __u32 *size, __u32 flags)
 {
 	int rc;
 
@@ -45,7 +45,7 @@ int lsm_get_self_attr(unsigned int attr, struct lsm_ctx *ctx,
  * Returns 0 on success or -1 on error.
  */
 int lsm_set_self_attr(unsigned int attr, struct lsm_ctx *ctx,  
-		      __kernel_size_t size, __u32 flags)
+		      __u32 size, __u32 flags)
 {
 	int rc;
 
@@ -66,7 +66,7 @@ int lsm_set_self_attr(unsigned int attr, struct lsm_ctx *ctx,
  *
  * Returns the number of active LSMs, or -1 on error.
  */
-int lsm_list_modules(__u64 *result, __kernel_size_t *size, __u32 flags)
+int lsm_list_modules(__u64 *result, __u32 *size, __u32 flags)
 {
 	int rc;
 

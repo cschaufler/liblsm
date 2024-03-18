@@ -83,7 +83,7 @@ static int writeattr(const char *path, char *data, int len)
  * Returns the final size of the lsm_ctx.
  */
 static unsigned int add_lsm_ctx(struct lsm_ctx *nctx, __u64 id, char *attr,
-				__kernel_size_t size)
+				__u32 size)
 {
 	unsigned int pad;
 	struct lsm_ctx lctx;
@@ -173,11 +173,10 @@ static const char *attrpath(unsigned int attr, __u64 lsmid)
  * Returns the number of lsm_ctx elements or a negative value
  * on error.
  */
-int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx,
-			   __kernel_size_t *size)
+int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 {
 	__u64 lsmids[MAXLSM];
-	__kernel_size_t lsize = MAXLSM * sizeof(__u64);
+	__u32 lsize = MAXLSM * sizeof(__u64);
 	struct lsm_ctx *octx = ctx;
 	unsigned int off;
 	const char *toread;
@@ -242,7 +241,7 @@ int lsm_set_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx)
  *
  * Returns the number of LSM IDs or -1 on error.
  */
-int lsm_list_modules_proc(__u64 *result, __kernel_size_t *size)
+int lsm_list_modules_proc(__u64 *result, __u32 *size)
 {
 	char *lsm;
 	char *red;

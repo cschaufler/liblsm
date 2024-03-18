@@ -12,7 +12,7 @@ Linux Security Module library
 .nf
 .B #include <sys/lsm.h>
 .P
-.BI "struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *" ctx ", __u64 *" size );
+.BI "struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *" ctx ", __u32 *" size );
 .P
 .SH DESCRIPTION
 Verify that there are contexts after the current context

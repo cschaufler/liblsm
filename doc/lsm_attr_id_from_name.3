@@ -2,9 +2,9 @@
 .\"
 .\" SPDX-License-Identifier: Linux-man-pages-copyleft
 .\"
-.TH lsm_attr_flag_from_name 3 (date) "Linux man-pages (unreleased)"
+.TH lsm_attr_id_from_name 3 (date) "Linux man-pages (unreleased)"
 .SH NAME
-lsm_attr_flag_from_name \- provide the ID of the LSM with a given name
+lsm_attr_id_from_name \- provide the ID of the LSM with a given name
 .SH LIBRARY
 Linux Security Module library
 .RI ( liblsm ", " \-llsm )
@@ -12,7 +12,7 @@ Linux Security Module library
 .nf
 .B #include <sys/lsm.h>
 .P
-.BI "int lsm_attr_flag_from_name(const char *" name );
+.BI "int lsm_attr_id_from_name(const char *" name );
 .P
 .SH DESCRIPTION
 Returns the Linux Security Module (LSM) attribute ID associated
@@ -30,4 +30,4 @@ does not identify a known LSM attribute, LSM_ATTR_UNDEF is returned.
 .BR lsm_get_proc_attr (2),
 .BR lsm_set_proc_attr (2),
 .BR lsm_list_modules (2),
-.BR lsm_attr_flag_to_name (3)
+.BR lsm_attr_id_to_name (3)

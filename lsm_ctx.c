@@ -18,7 +18,7 @@
  * Returns NULL if there are no more contexts, the next
  * one if there is one.
  */
-struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *ctx, __u64 *size)
+struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *ctx, __u32 *size)
 {
 	if (ctx == NULL || size == NULL || *size <= ctx->len)
 		return NULL;
