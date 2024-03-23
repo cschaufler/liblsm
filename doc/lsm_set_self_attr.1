@@ -1,0 +1,77 @@
+.\" Copyright (C) 2024 Casey Schaufler <casey@schaufler-ca.com>
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH lsm_set_self_attr 1 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_set_self_attr \- set Linux Security Module (LSM) process attributes
+.SH SYNOPSIS
+.B lsm_set_self_attr
+.I lsm
+.I attribute
+.I value
+.RI [ command [ command-options ]]
+.SH DESCRIPTION
+The
+.B lsm_set_self_attr
+program sets the
+.I value for the specified
+.I attribute
+for the specified
+.IR lsm .
+If
+.I command
+is not specified
+.B /bin/sh
+is executed.
+Otherwise, the specified
+.I command
+is executed with any
+.I command-options
+that are provided.
+.P
+The
+.I attribute
+may be one of:
+.TP
+.B current
+Provided by
+.BR SELinux ,
+.B Smack
+and
+.BR AppArmor .
+The ability to set this attribute may depend on LSM policy.
+Smack requires that the invoking process have
+.BR CAP_MAC_ADMIN .
+.TP
+.B exec
+Provided by
+.B SELinux
+and
+.BR AppArmor .
+The ability to set this attribute may depend on LSM policy.
+.TP
+.B fscreate
+Provided by
+.BR SELinux .
+The ability to set this attribute may depend on LSM policy.
+.TP
+.B keycreate
+Provided by
+.BR SELinux .
+The ability to set this attribute may depend on LSM policy.
+.TP
+.B prev
+Provided by
+.B SELinux
+and
+.BR AppArmor .
+This attribute may not be set.
+.TP
+.B sockcreate
+Provided by
+.BR SELinux .
+The ability to set this attribute may depend on LSM policy.
+.SH SEE ALSO
+.BR lsm_get_self_attr (1),
+.BR lsm_set_self_attr (2)

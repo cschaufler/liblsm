@@ -1,0 +1,53 @@
+.\" Copyright (C) 2024 Casey Schaufler <casey@schaufler-ca.com>
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH lsm_get_self_attr 1 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_get_self_attr \- get Linux Security Module (LSM) process attributes
+.SH SYNOPSIS
+.B lsm_get_self_attr \fIattribute\fP
+.SH DESCRIPTION
+The
+.B lsm_get_self_attr
+program prints the values for the specified
+.I attribute
+for all security modules active on the system that provide it.
+The format of the output is
+.P
+lsm-name attribute-value
+.P
+The
+.I attribute
+may be one of:
+.TP
+.B current
+Provided by
+.BR SELinux ,
+.B Smack
+and
+.BR AppArmor .
+.TP
+.B exec
+Provided by
+.BR SELinux .
+.TP
+.B fscreate
+Provided by
+.BR SELinux .
+.TP
+.B keycreate
+Provided by
+.BR SELinux .
+.TP
+.B prev
+Provided by
+.B SELinux
+and
+.BR AppArmor .
+.TP
+.B sockcreate
+Provided by
+.BR SELinux .
+.SH SEE ALSO
+.BR lsm_get_self_attr (2)
