@@ -13,6 +13,7 @@ OBJ=$(SRC:.c=.o)
 
 .PHONY: default
 default: $(LIBLSM)
+	make -C utils
 
 $(LIBLSM): $(OBJ)
 	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
