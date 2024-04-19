@@ -2,11 +2,11 @@
 # Copyright (C) Casey Schaufler <casey@schaufler-ca.com> 2024
 #
 #
-CC=/usr/bin/cc
 CFLAGS=-fPIC -Wall -Wextra -O2 -g
 LDFLAGS=-shared
 LIBLSM=liblsm.so
-CPPFLAGS=-I../../Kernel/linux/usr/include
+# If the kernel is too old to find they syscalls point at headers from source
+#CPPFLAGS=-I../../Kernel/linux/usr/include
 
 SRC=syscalls.c lsm_ctx.c lsm_id_maps.c proc.c
 OBJ=$(SRC:.c=.o)

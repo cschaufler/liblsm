@@ -2,10 +2,8 @@
 # Copyright (C) Casey Schaufler <casey@schaufler-ca.com> 2024
 #
 #
-CC=/usr/bin/cc
 CFLAGS=-Wall
 LIBLSM=../liblsm.so
-CPPFLAGS=-I../../../Kernel/linux/usr/include
 
 PROGRAMS=lsm_list_modules lsm_get_self_attr lsm_set_self_attr
 

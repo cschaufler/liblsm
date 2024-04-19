@@ -4,9 +4,8 @@
  *
  * Copyright (c) 2024 Casey Schaufler <casey@schaufler-ca.com>
  */
-#include <unistd.h>
 #include <errno.h>
-#include <linux/lsm.h>
+#include <asm/unistd.h>
 #include "liblsm.h"
 
 /**

@@ -4,10 +4,10 @@
  *
  * Copyright (c) 2024 Casey Schaufler <casey@schaufler-ca.com>
  */
-#include <unistd.h>
 #include <string.h>
-#include <linux/types.h>
+#include <unistd.h>
 #include <linux/lsm.h>
+#include <linux/types.h>
 
 /*
  * Functions to make using struct lsm_ctx easier.
