@@ -54,10 +54,12 @@ int main(int argc, char *argv[])
 	vp = (void *)lcp;
 
 	count = lsm_get_self_attr(attrid, lcp, &size, 0);
-	if (size <= 0 || count <= 0)
+	if (count < 0) {
+		fprintf(stderr, "%s: Not enough space for attrs?!\n", argv[0]);
 		exit(1);
+	}
 
-	while (count--) {
+	for ( ; count; count--) {
 		if ((lsm = lsm_id_to_name(lcp->id)) == NULL)
 			lsm = "Unknown-LSM";
 		strncpy(line, (char *)lcp->ctx, lcp->ctx_len);

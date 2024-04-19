@@ -74,8 +74,8 @@ static int writeattr(const char *path, char *data, int len)
  * add_lsm_ctx - fill an lsm_ctx structure
  * @nctx: pointer to the destination buffer
  * @id: the LSM ID to set
- * @attr: the attribute data
- * @size: the size of the attribute data
+ * @attr: the attribute data (must be NUL-terminated string)
+ * @size: bytes available in @nctx
  *
  * Fill the lsm_ctx structure pointed to by @nctx, verifying that
  * it fits in the @size available.
@@ -86,18 +86,22 @@ static unsigned int add_lsm_ctx(struct lsm_ctx *nctx, __u64 id, char *attr,
 				__u32 size)
 {
 	unsigned int pad;
-	struct lsm_ctx lctx;
+	struct lsm_ctx lctx = { };
 
 	lctx.id = id;
-	lctx.flags = 0;
 	lctx.ctx_len = strlen(attr) + 1;
 	lctx.len = sizeof(struct lsm_ctx) + lctx.ctx_len;
-	pad = (sizeof(struct lsm_ctx) + lctx.ctx_len) % sizeof(void *);
-	if (pad)
-		lctx.len += sizeof(void *) - pad;
+
+	pad = lctx.len % sizeof(void *);
+	if (pad) {
+		pad = sizeof(void *) - pad;
+		lctx.len += pad;
+	}
+
 	if (lctx.len <= size) {
 		*nctx = lctx;
 		memcpy(nctx->ctx, attr, nctx->ctx_len);
+		memset(nctx->ctx + lctx.len, 0, pad);
 	}
 	return lctx.len;
 }
@@ -158,7 +162,7 @@ static const char *attrpath(unsigned int attr, __u64 lsmid)
 	return NULL;
 }
 
-/*
+/**
  * lsm_get_self_attr_proc - emulate lsm_get_self_attr from /proc
  * @attr: attribute ID to fetch
  * @ctx: destination buffer
@@ -178,7 +182,7 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 	__u64 lsmids[MAXLSM];
 	__u32 lsize = MAXLSM * sizeof(__u64);
 	struct lsm_ctx *octx = ctx;
-	unsigned int off;
+	unsigned int off, to_write = 0;
 	const char *toread;
 	char *red;
 	int count = 0;
@@ -186,29 +190,35 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 	int i;
 
 	lsmcount = lsm_list_modules_proc(lsmids, &lsize);
-	
+
 	lsize = *size;
 	for (i = 0; i < lsmcount; i++) {
 		toread = attrpath(attr, lsmids[i]);
 		if (toread && (red = readattr(toread))) {
 			count++;
 			off = add_lsm_ctx(ctx, lsmids[i], red, lsize);
-			ctx = (void *)ctx + off;
-			if (off < lsize && lsize - off <= *size)
+			to_write += off;
+			if (lsize >= off) {
+				ctx = (void *)ctx + off;
 				lsize -= off;
-			else
+			} else {
 				lsize = 0;
+			}
 			free(red);
 			red = NULL;
 		}
 	}
-	*size = (void *)ctx - (void *)octx;
-	if (lsize)
+	if (to_write <= *size) {
+		*size = (void *)ctx - (void *)octx;
+		errno = 0;
 		return count;
-	return E2BIG;
+	}
+	*size = to_write;
+	errno = E2BIG;
+	return -1;
 }
 
-/*
+/**
  * lsm_set_self_attr_proc - emulate lsm_set_self_attr from /proc
  * @attr: attribute ID to fetch
  * @ctx: destination buffer
@@ -224,13 +234,15 @@ int lsm_set_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx)
 {
 	const char *towrite;
 
+	errno = 0;
 	towrite = attrpath(attr, ctx->id);
 	if (towrite)
 		return writeattr(towrite, (char *)ctx->ctx, ctx->ctx_len);
+	errno = ENOENT;
 	return -1;
 }
 
-/*
+/**
  * lsm_list_modules_proc - emulate lsm_list_modules
  * @result: destination buffer
  * @size: size of the destination buffer
@@ -263,7 +275,10 @@ int lsm_list_modules_proc(__u64 *result, __u32 *size)
 	*size = i * sizeof(*result);
 
 	free(red);
-	if (i > maxcount)
+	if (i > maxcount) {
+		errno = E2BIG;
 		return -1;
+	}
+	errno = 0;
 	return i;
 }
