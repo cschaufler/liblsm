@@ -74,8 +74,8 @@ static int writeattr(const char *path, char *data, int len)
  * add_lsm_ctx - fill an lsm_ctx structure
  * @nctx: pointer to the destination buffer
  * @id: the LSM ID to set
- * @attr: the attribute data
- * @size: the size of the attribute data
+ * @attr: the attribute data (must be NUL-terminated string)
+ * @size: bytes available in @nctx
  *
  * Fill the lsm_ctx structure pointed to by @nctx, verifying that
  * it fits in the @size available.
@@ -86,18 +86,22 @@ static unsigned int add_lsm_ctx(struct lsm_ctx *nctx, __u64 id, char *attr,
 				__u32 size)
 {
 	unsigned int pad;
-	struct lsm_ctx lctx;
+	struct lsm_ctx lctx = { };
 
 	lctx.id = id;
-	lctx.flags = 0;
 	lctx.ctx_len = strlen(attr) + 1;
 	lctx.len = sizeof(struct lsm_ctx) + lctx.ctx_len;
-	pad = (sizeof(struct lsm_ctx) + lctx.ctx_len) % sizeof(void *);
-	if (pad)
-		lctx.len += sizeof(void *) - pad;
+
+	pad = lctx.len % sizeof(void *);
+	if (pad) {
+		pad = sizeof(void *) - pad;
+		lctx.len += pad;
+	}
+
 	if (lctx.len <= size) {
 		*nctx = lctx;
 		memcpy(nctx->ctx, attr, nctx->ctx_len);
+		memset(nctx->ctx + lctx.len, 0, pad);
 	}
 	return lctx.len;
 }
