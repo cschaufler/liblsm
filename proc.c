@@ -158,7 +158,7 @@ static const char *attrpath(unsigned int attr, __u64 lsmid)
 	return NULL;
 }
 
-/*
+/**
  * lsm_get_self_attr_proc - emulate lsm_get_self_attr from /proc
  * @attr: attribute ID to fetch
  * @ctx: destination buffer
@@ -208,7 +208,7 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 	return E2BIG;
 }
 
-/*
+/**
  * lsm_set_self_attr_proc - emulate lsm_set_self_attr from /proc
  * @attr: attribute ID to fetch
  * @ctx: destination buffer
@@ -230,7 +230,7 @@ int lsm_set_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx)
 	return -1;
 }
 
-/*
+/**
  * lsm_list_modules_proc - emulate lsm_list_modules
  * @result: destination buffer
  * @size: size of the destination buffer
