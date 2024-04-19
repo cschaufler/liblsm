@@ -36,8 +36,8 @@ extern int lsm_list_modules_proc(__u64 *result, __u32 *size);
 /*
  * Functions to map LSM id values to strings
  */
-const char *lsm_id_to_name(int id);
-int lsm_id_from_name(const char *name);
+const char *lsm_id_to_name(__u64 id);
+__u64 lsm_id_from_name(const char *name);
 
-const char *lsm_attr_id_to_name(int attr);
-int lsm_attr_id_from_name(const char *name);
+const char *lsm_attr_id_to_name(unsigned int attr);
+__u64 lsm_attr_id_from_name(const char *name);

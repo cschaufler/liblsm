@@ -10,7 +10,7 @@
 
 struct id_map {
 	const char *name;
-	int id;
+	__u64 id;
 };
 
 static const struct id_map lsm_ids[] = {
@@ -36,7 +36,7 @@ static const struct id_map lsm_ids[] = {
  *
  * Returns a string pointer if the LSM is found, NULL otherwise.
  */
-const char *lsm_id_to_name(int id)
+const char *lsm_id_to_name(__u64 id)
 {
 	unsigned int i;
 
@@ -55,7 +55,7 @@ const char *lsm_id_to_name(int id)
  *
  * Returns the LSM ID if the @name is found, LSM_ID_UNDEF otherwise.
  */
-int lsm_id_from_name(const char *name)
+__u64 lsm_id_from_name(const char *name)
 {
 	unsigned int i;
 
@@ -83,7 +83,7 @@ static const struct id_map lsm_attrs[] = {
  *
  * Returns a string pointer if the attribute is found, NULL otherwise.
  */
-const char *lsm_attr_id_to_name(int attr)
+const char *lsm_attr_id_to_name(unsigned int attr)
 {
 	unsigned int i;
 
@@ -102,7 +102,7 @@ const char *lsm_attr_id_to_name(int attr)
  *
  * Returns the attribute ID if the @name is found, LSM_ATTR_UNDEF otherwise.
  */
-int lsm_attr_id_from_name(const char *name)
+unsigned int lsm_attr_id_from_name(const char *name)
 {
 	unsigned int i;
 
