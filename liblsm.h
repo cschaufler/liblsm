@@ -25,7 +25,7 @@ extern int lsm_list_modules(__u64 *result, __u32 *size, __u32 flags);
 
 /*
  * Functions to simulate the system calls using the
- * /proc/self/attr interfaces.
+ * /proc/self/attr interfaces. Used internally by liblsm.
  */
 extern int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx,
 			     __u32 *size);

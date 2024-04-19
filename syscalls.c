@@ -25,8 +25,10 @@ int lsm_get_self_attr(unsigned int attr, struct lsm_ctx *ctx,
 {
 	int rc;
 
+#ifdef __NR_lsm_get_self_attr
 	rc = syscall(__NR_lsm_get_self_attr, attr, ctx, size, flags);
 	if (rc < 0 && errno == ENOSYS)
+#endif
 		rc = lsm_get_self_attr_proc(attr, ctx, size);
 
 	return rc;
@@ -48,8 +50,10 @@ int lsm_set_self_attr(unsigned int attr, struct lsm_ctx *ctx,
 {
 	int rc;
 
+#ifdef __NR_lsm_set_self_attr
 	rc = syscall(__NR_lsm_set_self_attr, attr, ctx, size, flags);
 	if (rc < 0 && errno == ENOSYS)
+#endif
 		rc = lsm_set_self_attr_proc(attr, ctx);
 
 	return rc;
@@ -69,8 +73,10 @@ int lsm_list_modules(__u64 *result, __u32 *size, __u32 flags)
 {
 	int rc;
 
+#ifdef __NR_lsm_list_modules
 	rc = syscall(__NR_lsm_list_modules, result, size, flags);
 	if (rc < 0 && errno == ENOSYS)
+#endif
 		rc = lsm_list_modules_proc(result, size);
 
 	return rc;
