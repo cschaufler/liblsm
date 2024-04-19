@@ -203,9 +203,12 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 		}
 	}
 	*size = (void *)ctx - (void *)octx;
-	if (lsize)
+	if (lsize) {
+		errno = 0;
 		return count;
-	return E2BIG;
+	}
+	errno = E2BIG;
+	return -1;
 }
 
 /**
@@ -224,9 +227,11 @@ int lsm_set_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx)
 {
 	const char *towrite;
 
+	errno = 0;
 	towrite = attrpath(attr, ctx->id);
 	if (towrite)
 		return writeattr(towrite, (char *)ctx->ctx, ctx->ctx_len);
+	errno = ENOENT;
 	return -1;
 }
 
@@ -263,7 +268,10 @@ int lsm_list_modules_proc(__u64 *result, __u32 *size)
 	*size = i * sizeof(*result);
 
 	free(red);
-	if (i > maxcount)
+	if (i > maxcount) {
+		errno = E2BIG;
 		return -1;
+	}
+	errno = 0;
 	return i;
 }
