@@ -182,7 +182,7 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 	__u64 lsmids[MAXLSM];
 	__u32 lsize = MAXLSM * sizeof(__u64);
 	struct lsm_ctx *octx = ctx;
-	unsigned int off;
+	unsigned int off, to_write = 0;
 	const char *toread;
 	char *red;
 	int count = 0;
@@ -190,27 +190,30 @@ int lsm_get_self_attr_proc(unsigned int attr, struct lsm_ctx *ctx, __u32 *size)
 	int i;
 
 	lsmcount = lsm_list_modules_proc(lsmids, &lsize);
-	
+
 	lsize = *size;
 	for (i = 0; i < lsmcount; i++) {
 		toread = attrpath(attr, lsmids[i]);
 		if (toread && (red = readattr(toread))) {
 			count++;
 			off = add_lsm_ctx(ctx, lsmids[i], red, lsize);
-			ctx = (void *)ctx + off;
-			if (off < lsize && lsize - off <= *size)
+			to_write += off;
+			if (lsize >= off) {
+				ctx = (void *)ctx + off;
 				lsize -= off;
-			else
+			} else {
 				lsize = 0;
+			}
 			free(red);
 			red = NULL;
 		}
 	}
-	*size = (void *)ctx - (void *)octx;
-	if (lsize) {
+	if (to_write <= *size) {
+		*size = (void *)ctx - (void *)octx;
 		errno = 0;
 		return count;
 	}
+	*size = to_write;
 	errno = E2BIG;
 	return -1;
 }
