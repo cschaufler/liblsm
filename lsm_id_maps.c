@@ -26,6 +26,8 @@ static const struct id_map lsm_ids[] = {
 	{ .name = "lockdown",	.id = LSM_ID_LOCKDOWN },
 	{ .name = "bpf",	.id = LSM_ID_BPF },
 	{ .name = "landlock",	.id = LSM_ID_LANDLOCK },
+	{ .name = "ima",	.id = LSM_ID_IMA },
+	{ .name = "evm",	.id = LSM_ID_EVM },
 };
 
 /**
