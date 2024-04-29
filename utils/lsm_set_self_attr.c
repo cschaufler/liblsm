@@ -18,12 +18,11 @@
 
 int main(int argc, char *argv[])
 {
-	int pad;
+	__u64 size;
 	int lsmid;
 	int attrid;
 	int attrlen;
 	char *cmd = "/bin/sh";
-	struct lsm_ctx tctx;
 	struct lsm_ctx *lcp;
 
 	if (argc < 4) {
@@ -42,21 +41,19 @@ int main(int argc, char *argv[])
 	}
 	attrlen = strlen(argv[3]) + 1;
 
-	tctx.flags = 0;
-	tctx.id = lsmid;
-	tctx.ctx_len = attrlen;
-	tctx.len = sizeof(tctx) + attrlen;
-	pad = (sizeof(tctx) + tctx.ctx_len) % sizeof(void *);
-	if (pad)
-		tctx.len += sizeof(void *) - pad;
-
-	if ((lcp = malloc(tctx.len)) == NULL) {
+	size = sizeof(*lcp) + attrlen + sizeof(lcp);
+	if (lsm_ctx_fill(NULL, &size, argv[3], attrlen, lsmid, 0) < 0) {
+		fprintf(stderr, "%s: attribute validation failure.\n", argv[0]);
+		exit(1);
+	}
+	if ((lcp = malloc(size)) == NULL) {
 		fprintf(stderr, "%s: memory allocation failure.\n", argv[0]);
 		exit(1);
 	}
-
-	*lcp = tctx;
-	memcpy(lcp->ctx, argv[3], attrlen);
+	if (lsm_ctx_fill(lcp, &size, argv[3], attrlen, lsmid, 0) < 0) {
+		fprintf(stderr, "%s: attribute validation failure.\n", argv[0]);
+		exit(1);
+	}
 
 	if (lsm_set_self_attr(attrid, lcp, lcp->len, 0)) {
 		fprintf(stderr, "%s %s reset failed\n", argv[1], argv[2]);

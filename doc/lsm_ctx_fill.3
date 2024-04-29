@@ -1,0 +1,53 @@
+.\" Copyright (c) 2024 Casey Schaufler (casey@schaufler-ca.com) February 28, 2024
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH lsm_ctx_fill 3 (date) "Linux man-pages (unreleased)"
+.SH NAME
+lsm_ctx_fill \- fill a lsm_ctx structure
+.SH LIBRARY
+Linux Security Module library
+.RI ( liblsm ", " \-llsm )
+.SH SYNOPSIS
+.nf
+.B #include <sys/lsm.h>
+.P
+.BI "int lsm_ctx lsm_ctx_fill(struct lsm_ctx *" ctx ", __u64 *"uctx_len ",
+.BI "void *" val ", __u64 " val_len ", __u64 " id ", __u64 " flags );
+.P
+.SH DESCRIPTION
+Fill the
+.I ctx
+structure using the values passed.
+The
+.I len
+field of the
+.I ctx
+structure will be calculated and padded if necessary.
+The
+.I uctx_len
+parameter contains a pointer to the size of the buffer containing
+the contexts.
+Place the size of the context into
+.I uctx_len 
+on return.
+The
+.I val
+parameter is a pointer to the attribute value.
+The
+.I val_len
+parameter is the length of the attribute.
+It should include the terminating nil byte if there is one.
+The
+.I id
+parameter is the LSM ID for the security module.
+The
+.I flags
+parameter is LSM specific and currently unused.
+.P
+.SH RETURN VALUE
+On success, 0 in returned.
+.SH SEE ALSO
+.BR lsm_set_proc_attr (2),
+.BR lsm_ctx (3type),
+.BR lsm_ctx_fill (3)

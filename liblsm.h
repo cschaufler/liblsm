@@ -13,6 +13,9 @@
  * Functions to make using struct lsm_ctx easier.
  */
 extern struct lsm_ctx *lsm_ctx_next(struct lsm_ctx *ctx, __u32 *size);
+extern struct lsm_ctx *lsm_ctx_fill(struct lsm_ctx *uctx, __u64 *uctx_len,
+				    void *val, __u64 val_len, __u64 id,
+				    __u64 flags);
 
 /*
  * LSM specific system calls.
